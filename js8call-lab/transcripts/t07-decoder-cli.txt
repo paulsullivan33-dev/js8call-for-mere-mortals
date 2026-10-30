@@ -1,0 +1,55 @@
+t07 — The js8 decoder on its own, and the decode the lab cannot show
+
+The decoder is a program in its own right. Its help (excerpt):
+
+$ js8 --help
+ Usage: js8 [OPTIONS] file1 [file2 ...]
+        Reads data from *.wav files.
+
+        js8 -s <key> [-w patience] [-m threads] [-e path] [-a path] [-t path]
+        Gets data from shared memory region with key==<key>
+
+ OPTIONS:
+ -f HERTZ  --rx-frequency HERTZ   Receive frequency offset, default HERTZ=1500
+ -8        --js8                  JS8 mode
+ -b A      --sub-mode A           Sub mode, default SUBMODE=A
+ -d DEPTH  --depth DEPTH          Decoding depth (1-3), default DEPTH=1
+ -c CALL   --my-call CALL         my callsign
+ -G GRID   --my-grid GRID         my grid locator
+ ...
+
+It expects WAV files sampled at 12000 Hz (the WSJT family's
+convention), named like the recordings the application itself
+saves, YYMMDD_HHMMSS.wav. The lab made one — 15 seconds of the
+same 1500 Hz tone at 12 kHz — and ran the mode A pass over it:
+
+$ js8 -8 -f 1500 261030_143000.wav
+ EOF on input file 261030_143000.wav
+<DecodeStarted>   0   0
+ <DecodeDebug> mode A decode started
+ <DecodeDebug> mode A decode finished
+ <DecodeDebug> finished
+<DecodeFinished>   0
+
+The decoder ran, examined the file, and decoded nothing,
+because there was no JS8 signal in it to decode.
+
+Why not decode a real one? A decode needs a genuine JS8
+recording, and the lab has none it may honestly use:
+
+  - The Debian package ships no sample WAV (t00's inventory).
+  - The upstream project ships none either (checked in the
+    package documentation and the project's public pages).
+  - There is no receiver and no antenna; nothing was
+    recorded off the air.
+  - Generating a signal with the application's own transmit
+    side would mean keying a transmission the lab has no
+    business making into a station that does not exist —
+    and pressing "transmit" is the one thing this guide's
+    lab never does, even into a dummy device.
+
+So: the decoder is proven to run, the audio path into the
+application is proven to carry sound (t06), and decoding an
+actual JS8 transmission is documented-only in this guide.
+Any JS8Call guide that shows you a decode it cannot source
+is showing you a picture, not a measurement.

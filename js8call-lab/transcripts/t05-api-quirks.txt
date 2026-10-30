@@ -1,0 +1,42 @@
+t05 — API quirks, kept verbatim: the speed that would not be set
+
+MODE.GET_SPEED works, and follows the GUI. Measured by
+choosing speeds in the application's Mode menu and asking the
+API after each choice:
+
+  GUI menu choice        API MODE.GET_SPEED
+  JS8 (Normal, 15s)      "SPEED":0
+  JS8 (Fast, 10s)        "SPEED":1
+  JS8 (Turbo, 6s)        "SPEED":2
+  JS8 (Slow, 30s)        "SPEED":4
+
+(The menu offers exactly those four speeds in this build; no
+speed in it answers to 3. The Mode menu also gave the guide
+its frame facts: Slow 30s/25 Hz/~8 WPM, Normal 15s/50 Hz/
+~16 WPM, Fast 10s/80 Hz/~24 WPM, Turbo 6s/160 Hz/~40 WPM,
+plus the MULTI, AUTO+CONF, HB and ACK toggles.)
+
+MODE.SET_SPEED, however, did not move the speed off 1 in any
+of the three message shapes tried. Verbatim:
+
+>>> {"type": "MODE.SET_SPEED", "value": 2}
+<<< {"params":{"SPEED":1,"_ID":294070220973},"type":"MODE.SPEED","value":""}
+>>> {"type": "MODE.GET_SPEED", "value": ""}
+<<< {"params":{"SPEED":1,"_ID":294070221574},"type":"MODE.SPEED","value":""}
+
+>>> {"type": "MODE.SET_SPEED", "value": "", "params": {"SPEED": 2}}
+<<< {"params":{"SPEED":1,...},"type":"MODE.SPEED","value":""}
+
+>>> {"type": "MODE.SET_SPEED", "value": "2"}
+<<< {"params":{"SPEED":1,...},"type":"MODE.SPEED","value":""}
+
+Each SET was answered politely with the current speed, and
+the GUI never changed. Whether this build wants a fourth
+shape, or SET_SPEED only reports in 2.2.0, the lab could not
+determine from the outside — so the guide teaches GET as
+proven and SET_SPEED as answered-but-ineffective here.
+STATION.SET_GRID (t04) proves the write path itself works for
+other message types, so this is specific to SET_SPEED.
+
+Unknown message types are silently ignored — no error, no
+reply (the BOGUS.WHATEVER exchange at the end of t04).

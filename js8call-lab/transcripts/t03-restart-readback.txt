@@ -1,0 +1,51 @@
+t03 — A virtual sound card, a restart, and the settings read back
+
+PulseAudio (already on the machine) was started privately for
+the lab HOME, with one null sink — a device that accepts audio
+and throws it away, whose "monitor" can be recorded or
+listened to as if it were a microphone:
+
+$ XDG_RUNTIME_DIR=$LAB/run HOME=$LAB/home pulseaudio --daemonize=yes --exit-idle-time=-1
+$ pactl load-module module-null-sink sink_name=lab
+$ pactl set-default-sink lab
+$ pactl set-default-source lab.monitor
+$ pactl info | grep -E "Default Sink|Default Source"
+Default Sink: lab
+Default Source: lab.monitor
+
+The application was stopped and started again, same lab HOME.
+This restart is also the configuration read-back test: nothing
+was typed in again.
+
+Result, from the startup log:
+
+$ grep -c "PulseAudioService: pa_context_connect() failed" js8call-run2.log
+0
+
+No audio errors, no error dialogs. The main window
+(screenshot js8call-main-window.png in this lab folder) came
+up showing, from the saved file alone:
+
+  - "N0CALL - AA00AA" at the top centre
+  - dial frequency 14.078 000, offset 1500 Hz
+  - status bar "Decoding", mode JS8
+  - the TCP API listening again on 127.0.0.1:2442
+
+and the configuration dialog, reopened with F2, showed the
+same station details in its fields. The Audio tab of that
+dialog showed which devices the application had chosen from
+PulseAudio, in its own words:
+
+  Modulation Soundcard Input:  lab.monitor   (Mono)
+  Modulation Soundcard Output: lab           (Mono)
+  Notification Soundcard Output: lab
+
+The data directory had also grown a store-and-forward inbox:
+
+$ ls -la ~/.local/share/JS8Call/
+ALL.TXT  inbox.db3  save/  timer.out
+$ python3 -c "list tables in inbox.db3"
+tables: ['inbox_v1']
+
+inbox.db3 is a SQLite database with a single table, inbox_v1 —
+the station inbox lives there (t04 reads it through the API).

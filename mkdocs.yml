@@ -1,0 +1,30 @@
+site_name: JS8Call for Mere Mortals
+site_description: Keyboard-to-keyboard messaging with signals too weak to hear. Installing JS8Call, configuring a station, reading its waterfall, and understanding its heartbeats, relays, station inbox and automation API — proven in a lab with no radio attached, with the limits stated plainly.
+site_url: https://paulsullivan33-dev.github.io/js8call-for-mere-mortals/
+copyright: 'Part of <a href="https://paulsullivan33-dev.github.io/mere-mortals/">For Mere Mortals</a> · Text CC BY 4.0, code MIT'
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What JS8Call Is: what-js8call-is.md
+  - JS8 — The Mode: js8-the-mode.md
+  - The Moving Parts: the-moving-parts.md
+  - What You Need: what-you-need.md
+  - Installing JS8Call: installing-js8call.md
+  - First Run and Configuration: first-run-and-configuration.md
+  - The Main Window and Waterfall: the-main-window-and-waterfall.md
+  - Frequencies and Band Activity: frequencies-and-band-activity.md
+  - Sending and Receiving Messages: sending-and-receiving.md
+  - Messages, Heartbeats, Relays and the Inbox: message-types-and-network-features.md
+  - Automation — The API: automation-the-api.md
+  - Logging and Spotting Networks: logging-and-psk-reporter.md
+  - Recipes: recipes.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

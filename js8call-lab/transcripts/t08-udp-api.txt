@@ -1,0 +1,33 @@
+t08 — The UDP API: not exercised, and why, verbatim
+
+JS8Call also offers a UDP server API (the Reporting tab shows
+UDP Server Hostname 127.0.0.1, UDP Server Port 2242, left
+disabled in this lab). Two independent reasons keep it
+documented-only here:
+
+1. The sandbox blocks UDP sends outright — even on loopback.
+   The attempt, verbatim:
+
+   $ python3 -c "send one datagram to 127.0.0.1:2242"
+   UDP send failed: PermissionError: [Errno 1] Operation not permitted
+
+   That is the machine refusing, not the application: the
+   datagram never left the test program.
+
+2. It was unnecessary. The TCP API on 2442 (t04) carries the
+   same JSON message set, and it is the one the guide
+   teaches. On an ordinary machine the UDP API answers the
+   same messages; nothing about it could be verified from
+   this sandbox, so the guide says exactly that.
+
+Also recorded for completeness — where the full frequency
+table came from. The Frequencies tab (t02) shows the first
+rows; the complete list the application saved for itself was
+decoded out of its own settings file (the FrequenciesForRegion
+Modes value in JS8Call.ini, eleven JS8 entries):
+
+   1.842   3.578   7.078   10.130   14.078   18.100
+  21.078  24.915  28.078  50.318  144.178        (MHz)
+
+160m through 2m, one dial frequency per band — the same list
+the band control in the main window cycles through.

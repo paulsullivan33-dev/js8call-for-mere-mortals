@@ -1,0 +1,55 @@
+t04 — The TCP API, exercised end to end (js8call-lab/api_client.py)
+
+One JSON object per line over a plain TCP connection to
+127.0.0.1:2442. >>> is the lab's client, <<< is the
+application's reply, both verbatim. Reads first, then one
+write — the grid square — changed and changed back.
+
+connected to 127.0.0.1:2442
+
+>>> {"type": "STATION.GET_CALLSIGN", "value": ""}
+<<< {"params":{"_ID":294070192071},"type":"STATION.CALLSIGN","value":"N0CALL"}
+
+>>> {"type": "STATION.GET_GRID", "value": ""}
+<<< {"params":{"_ID":294070192770},"type":"STATION.GRID","value":"AA00AA"}
+
+>>> {"type": "STATION.GET_INFO", "value": ""}
+<<< {"params":{"_ID":294070193470},"type":"STATION.INFO","value":""}
+
+>>> {"type": "STATION.GET_STATUS", "value": ""}
+<<< {"params":{"_ID":294070194171},"type":"STATION.STATUS","value":"IDLE <MYIDLE> VERSION <MYVERSION>"}
+
+>>> {"type": "MODE.GET_SPEED", "value": ""}
+<<< {"params":{"SPEED":1,"_ID":294070194871},"type":"MODE.SPEED","value":""}
+
+>>> {"type": "RIG.GET_FREQ", "value": ""}
+<<< {"params":{"DIAL":14078000,"FREQ":14079500,"OFFSET":1500,"_ID":294070195572},"type":"RIG.FREQ","value":""}
+
+>>> {"type": "RX.GET_TEXT", "value": ""}
+<<< {"params":{"_ID":294070196273},"type":"RX.TEXT","value":""}
+
+>>> {"type": "TX.GET_TEXT", "value": ""}
+<<< {"params":{"_ID":294070196973},"type":"TX.TEXT","value":""}
+
+>>> {"type": "RX.GET_BAND_ACTIVITY", "value": ""}
+<<< {"params":{"_ID":294070197674},"type":"RX.BAND_ACTIVITY","value":""}
+
+>>> {"type": "INBOX.GET_MESSAGES", "value": ""}
+<<< {"params":{"MESSAGES":[],"_ID":294070198375},"type":"INBOX.MESSAGES","value":""}
+
+>>> {"type": "STATION.SET_GRID", "value": "AA00AB"}
+<<< {"params":{"_ID":294070199154},"type":"STATION.GRID","value":"AA00AB"}
+
+>>> {"type": "STATION.GET_GRID", "value": ""}
+<<< {"params":{"_ID":294070199855},"type":"STATION.GRID","value":"AA00AB"}
+
+>>> {"type": "STATION.SET_GRID", "value": "AA00AA"}
+<<< {"params":{"_ID":294070200556},"type":"STATION.GRID","value":"AA00AA"}
+
+>>> {"type": "STATION.GET_GRID", "value": ""}
+<<< {"params":{"_ID":294070201256},"type":"STATION.GRID","value":"AA00AA"}
+
+>>> {"type": "BOGUS.WHATEVER", "value": ""}
+<<< (no reply)
+
+connection closed

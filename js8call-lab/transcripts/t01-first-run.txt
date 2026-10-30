@@ -1,0 +1,57 @@
+t01 — First run, headless under Xvfb, isolated HOME
+
+Xvfb provides a screen nobody can see; the application is run
+with HOME pointed at an empty lab directory so every file it
+creates can be listed afterwards.
+
+$ Xvfb :99 -screen 0 1400x1000x24 &
+$ HOME=$LAB/home DISPLAY=:99 $LAB/root/usr/bin/js8call &
+
+$ ps aux | grep -E "js8call|/js8 " | grep -v grep
+... /home/hatch/workspace/js8call-labwork/root/usr/bin/js8call
+... /home/hatch/workspace/js8call-labwork/root/usr/bin/js8 -s JS8Call -w 1 -m 1 -e /home/hatch/workspace/js8call-labwork/root/usr/bin -a /home/hatch/workspace/js8call-labwork/home/.local/share/JS8Call -t /tmp/JS8Call
+
+The second line is the decoder: a separate process, fed through
+a shared-memory region whose key is "JS8Call" (-s), with its
+data path (-a) inside the lab HOME and its temp path (-t) at
+/tmp/JS8Call.
+
+The first thing the application did was open its Configuration
+dialog (screenshot js8call-config-filled.png in this lab
+folder, taken after the station details were typed in t02):
+"My Callsign" and "My Maidenhead Grid Locator" stood empty,
+highlighted pink, with the station message templates below
+them — CQ Message "CQ CQ CQ <MYGRID4>", Reply Message
+"HW CPY?", Station Status "IDLE <MYIDLE> VERSION <MYVERSION>".
+
+Files after the first start:
+
+$ find $LAB/home -type f
+~/.config/JS8Call.ini
+~/.local/share/JS8Call/ALL.TXT
+~/.local/share/JS8Call/timer.out
+
+$ cat ~/.config/JS8Call.ini
+[MultiSettings]
+CurrentName=Default
+
+The settings file is a stub until the dialog is saved (t02);
+ALL.TXT, the activity log, already exists.
+
+The machine has no sound hardware at all, and the startup log
+says so, repeatedly (excerpt):
+
+26-10-30T14:06:15.610Z: QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+26-10-30T14:06:15.824Z: PulseAudioService: pa_context_connect() failed
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib pcm.c:2721:(snd_pcm_open_noupdate) Unknown PCM default
+ALSA lib pcm_oss.c:397:(_snd_pcm_oss_open) Cannot open device /dev/dsp
+ALSA lib pulse.c:242:(pulse_connect) PulseAudio: Unable to connect: Connection refused
+
+...and the main window raised "Error in Sound Output — An
+error opening the audio output device has occurred" and
+"Error in Sound Input — Requested input audio format is not
+supported on device" dialogs behind the configuration window.
+On a machine with a sound card none of this appears; on this
+one it is the honest first impression, and t03 fixes it by
+giving the application a (virtual) device.

@@ -1,0 +1,47 @@
+t00 — Installing JS8Call, download-only, nothing installed system-wide
+
+The lab machine is Ubuntu 24.04 (noble). The sandbox shares its
+apt state with other work, so the package was fetched with
+lab-private apt state and unpacked by hand. No package was
+installed on the system.
+
+$ apt-get -o Dir::State=$LAB/apt/state \
+          -o Dir::State::Lists=$LAB/apt/state/lists \
+          -o Dir::Cache=$LAB/apt/cache \
+          -o Dir::Cache::Archives=$LAB/debs \
+          install --download-only -y js8call
+
+Get:1 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 js8call amd64 2.2.0+ds-5build2 [5930 kB]
+Fetched 5930 kB in 2s (2461 kB/s)
+Download complete and in download only mode
+
+Only the one .deb was needed: every library JS8Call depends on
+(Qt 5, FFTW, Hamlib 4, QCustomPlot, SQLite) was already present
+on the machine, which the next-but-one check confirms.
+
+$ dpkg-deb -f js8call_2.2.0+ds-5build2_amd64.deb Package Version Description
+Package: js8call
+Version: 2.2.0+ds-5build2
+Description: Amateur Radio Digital Mode providing weak signal messaging
+ JS8Call is using the JS8 Digital Mode for providing weak signal
+ messaging to Amateur Radio Operators.
+
+$ dpkg-deb -x js8call_2.2.0+ds-5build2_amd64.deb $LAB/root
+$ find $LAB/root -type f
+.../usr/bin/js8
+.../usr/bin/js8call
+.../usr/share/applications/js8call.desktop
+.../usr/share/doc/JS8Call/COPYING.gz
+.../usr/share/doc/JS8Call/INSTALL
+.../usr/share/doc/JS8Call/INSTALL-WSJTX.gz
+.../usr/share/doc/JS8Call/README.gz
+.../usr/share/doc/js8call/changelog.Debian.gz
+.../usr/share/doc/js8call/copyright
+.../usr/share/pixmaps/js8call_icon.png
+
+Two executables: js8call, the application, and js8, the decoder
+it runs as a separate process. Note what is NOT in the package:
+no sample WAV files, no audio of any kind. That matters in t07.
+
+$ ldd $LAB/root/usr/bin/js8call | grep "not found"
+(no output — every shared library resolves)

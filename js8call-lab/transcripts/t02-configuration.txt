@@ -1,0 +1,54 @@
+t02 — Configuration: a placeholder station, the API switched on
+
+The lab station is invented: callsign N0CALL, grid AA00AA —
+placeholders, framed as "replace with yours" everywhere in the
+guide. They were typed into the Configuration dialog's Station
+tab (xdotool driving the real dialog) and saved with OK.
+
+Also changed from the defaults, in the Reporting tab:
+
+  - "Enable spotting to reporting networks (JS8NET,
+    PSKReporter, etc)" — turned OFF. The laboratory does not
+    report a station that does not exist.
+  - "Allow setting station information (Grid, Info, Status,
+    etc) from the APIs" — turned ON (needed for t04's write
+    test).
+  - "Enable TCP Server API" — ON. "Accept TCP Requests" — ON.
+    TCP Server Hostname 127.0.0.1, TCP Server Port 2442,
+    TCP Max Connections 1.
+  - The UDP API was left off (UDP Server Port 2242 shown).
+
+After OK, the settings file grew from 2 lines to 160:
+
+$ grep -E "MyCall|MyGrid|TCPEnabled|TCPServer|TCPServerPort|AcceptTCP|PSKReporter|SpotToAPRS" ~/.config/JS8Call.ini
+MyCall=N0CALL
+MyGrid=AA00AA
+PSKReporter=false
+SpotToAPRS=true
+AcceptTCPRequests=true
+TCPEnabled=true
+TCPServer=127.0.0.1
+TCPServerPort=2442
+
+(SpotToAPRS=true is the stored state of the APRS sub-option;
+its parent "Enable spotting" is off, so nothing is sent.)
+
+And the application began listening, on loopback only:
+
+$ ss -ltnp | grep 2442
+LISTEN 0  0  127.0.0.1:2442  0.0.0.0:*  users:(("js8call",pid=85902,fd=14))
+
+Other tabs read for the guide's configuration chapter (all
+defaults, nothing changed):
+
+  Radio — Rig: None; PTT Method VOX; CAT/PTT controls greyed
+  out while no rig is chosen; a "Test CAT" button. Hamlib
+  supplies the rig list.
+  Networking & Autoreply — "Pause heartbeat transmissions
+  while in a QSO", "Turn autoreply on at startup", "Ask for
+  confirmation before sending autoreply transmissions",
+  "Disable message relay (>) when autoreply is enabled",
+  idle timeout "60 minutes of inactivity".
+  Frequencies — a table of JS8 dial frequencies; the visible
+  rows read 1.842 000 MHz (160m), 3.578 000 MHz (80m),
+  7.078 000 MHz (40m), 10.130 000 MHz (30m).
